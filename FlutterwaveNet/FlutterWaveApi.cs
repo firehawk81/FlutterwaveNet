@@ -19,10 +19,8 @@ namespace FlutterwaveNet
 
         private async Task<TransactionReponse> MakePayment(TransactRequest request)
         {
-
             string endpoint = "/v3/payments";
-            using (var client = new HttpClient())
-            {
+            using (var client = new HttpClient()) {
                 client.BaseAddress = new Uri("https://api.flutterwave.com");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -34,13 +32,11 @@ namespace FlutterwaveNet
                    var httpContent = new StringContent(payload, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync(endpoint, httpContent);
-                if (response.IsSuccessStatusCode)
-                {
+                if (response.IsSuccessStatusCode) {
                     string content = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<TransactionReponse>(content);
                 }
-                else
-                {
+                else {
                     string content = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<TransactionReponse>(content);
                 }
@@ -49,10 +45,8 @@ namespace FlutterwaveNet
 
         private async Task<TransactionReponse> VerifyPayment(string transactiondId)
         {
-
             string endpoint = $"/v3/transactions/{transactiondId}/verify";
-            using (var client = new HttpClient())
-            {
+            using (var client = new HttpClient()) {
                 client.BaseAddress = new Uri("https://api.flutterwave.com");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -64,21 +58,17 @@ namespace FlutterwaveNet
                 //var httpContent = new StringContent(payload, Encoding.UTF8, "application/json");
 
                 var response = await client.GetAsync(endpoint);
-                if (response.IsSuccessStatusCode)
-                {
+                if (response.IsSuccessStatusCode) {
                     string content = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<TransactionReponse>(content);
                 }
-                else
-                {
+                else {
                     string content = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<TransactionReponse>(content);
                 }
             }
         }
-
-
-
+        
         public TransactionReponse Initialize(TransactRequest request)
         {
            return Task.Run(() => MakePayment(request)).Result;    
